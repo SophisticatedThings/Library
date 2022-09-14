@@ -1,0 +1,9 @@
+package com.example.coollibrary.exception_handling.ClientHandling;
+
+public class NoClientsException extends RuntimeException{
+
+    public NoClientsException(String message){
+
+        super(message);
+    }
+}
