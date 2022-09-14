@@ -1,0 +1,2 @@
+This is a Library. Yeah, just a library, but sush sophisticated one.It consists of 3 controllers, which is able to execute CRUD functionality with 3 entities: books,
+employees, clients. It's REST Api, so i used GET,DELETE,POST,PUT operations. To make my application easier, i've injected Spring Boot functionality, including Spring Data.
