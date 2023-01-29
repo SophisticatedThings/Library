@@ -18,11 +18,11 @@ target/
 *.iws
 *.iml
 *.ipr
-.mvn/wrapper
-out/artifacts/Library_jar
-Log.log
+/wrapper
+/out
+*.log
 mvnw
-mvnw.cmd
+*.cmd
 
 ### NetBeans ###
 /nbproject/private/
