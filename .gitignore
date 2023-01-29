@@ -4,10 +4,11 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 /wrapper
-/out
+/out/artifacts/Library_jar
+/Log.log
+/mvnw
+/mvnw.cmd
 *.log
-mvnw
-*.cmd
 
 ### STS ###
 .apt_generated
