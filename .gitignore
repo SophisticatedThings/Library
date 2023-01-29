@@ -3,12 +3,6 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-/wrapper
-/out/artifacts/Library_jar
-/Log.log
-/mvnw
-/mvnw.cmd
-*.log
 
 ### STS ###
 .apt_generated
@@ -24,6 +18,12 @@ target/
 *.iws
 *.iml
 *.ipr
+/wrapper
+/out/artifacts/Library_jar
+/Log.log
+/mvnw
+/mvnw.cmd
+*.log
 
 ### NetBeans ###
 /nbproject/private/
