@@ -16,13 +16,11 @@ public interface BookRepository extends JpaRepository<Book, Long>{
     Book findAllByAuthorAndAndTitle(String author, String title);
     List<Book> getBooksByTitle(String title);
     @Modifying
-    @Transactional
     @Query(nativeQuery = true,value = "update books set locked=:state where id=:id")
     void setLocked(Long id, boolean state);
     @Query(nativeQuery = true, value = "select * from books")
     List<Book> findAllBooks();
     @Modifying
-    @Transactional
     @Query(nativeQuery = true, value = "update books set client_id=:id where id=:bookId")
     void setClientId(Long id, Long bookId);
 
