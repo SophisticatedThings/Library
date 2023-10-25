@@ -8,9 +8,10 @@ import com.artem.library.exception_handling.bookHandling.BookAlreadyInUsingExcep
 import com.artem.library.exception_handling.bookHandling.NoBooksException;
 import com.artem.library.exception_handling.bookHandling.NoSuchBookException;
 import com.artem.library.model.Book;
+import com.artem.library.repository.BookHibernateRepository;
 import com.artem.library.service.BookService;
 import com.artem.library.service.ClientService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,40 +22,37 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/books")
+@RequiredArgsConstructor
 public class BookRestController {
     
     private final ClientService clientService;
     private final BookService bookService;
-    @Autowired
-    public BookRestController(BookService bookService, ClientService clientService) {
+    private final BookHibernateRepository bookHibernateRepository;
 
-        this.clientService = clientService;
-        this.bookService = bookService;
-    }
-
-    @GetMapping
+    @GetMapping(value = {"","/{title}"})
     @PreAuthorize("hasAuthority('books:read')")
-    public List<Book> getAllBooks(@RequestParam(value="title",required = false) String title) {
+    public List<Book> getAllBooks(@PathVariable(required = false) String title) {
 
-
-        if (bookService.getAllBooks().isEmpty()) {
-            throw new NoBooksException("The library is empty currently");
-        }
         if(title != null){
 
-            List<Book> books = bookService.getBooksByTitle(title);
-            if (books.isEmpty()){
-                   throw new NoBooksException("There is no books with title = " + title);
+            List<Book> booksByTitle = bookHibernateRepository.getBooksByTitle(title);
+            if (booksByTitle.isEmpty()){
+                throw new NoBooksException("There is no books with title = " + title);
             }
-            return bookService.getBooksByTitle(title);
+            return booksByTitle;
 
         }
+        List<Book> books = bookHibernateRepository.getAllBooks();
+
+        if (books.isEmpty()) {
+            throw new NoBooksException("The library is empty currently");
+        }
         else {
-            return bookService.getAllBooks();
+            return books;
         }
 
     }
-    @GetMapping("/{id}")
+    /*@GetMapping("/{id}")
     @PreAuthorize("hasAuthority('books:read')")
     public Book getBookById(@PathVariable("id")Long id){
 
@@ -65,9 +63,9 @@ public class BookRestController {
             else{
                 return book;
             }
-    }
-    @PutMapping("/rent/{id}/")
-    @PreAuthorize("hasAuthority('books:write')")
+    }*/
+    @PatchMapping("/rent/{id}/")
+    //@PreAuthorize("hasAuthority('books:write')")
     public Book rentBookById( @PathVariable("id") Long id, @RequestParam(value="bookId", required = false) Long bookId){
 
           if (clientService.findById(id) == null){
@@ -89,7 +87,6 @@ public class BookRestController {
 
 
     }
-
     @PostMapping
     @PreAuthorize("hasAuthority('books:write')")
     public ResponseEntity<Book> saveOrUpdateBook( @RequestBody  Book addedBook) {
@@ -141,21 +138,3 @@ public class BookRestController {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
